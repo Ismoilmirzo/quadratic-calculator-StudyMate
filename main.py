@@ -1,7 +1,7 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QMessageBox
 from PyQt5 import QtGui
-from PyQt5.QtGui import QFont, QColor, QPalette
+from PyQt5.QtGui import QFont, QColor, QPalette, QDoubleValidator
 from PyQt5.QtCore import Qt
 
 
@@ -31,16 +31,19 @@ class StudyMateApp(QMainWindow):
         self.a_label.setGeometry(20, 80, 20, 20)
         self.a_input = QLineEdit(self)
         self.a_input.setGeometry(50, 80, 50, 20)
-
+        self.a_input.setValidator(QDoubleValidator())
+        
         self.b_label = QLabel("b =", self)
         self.b_label.setGeometry(20, 110, 20, 20)
         self.b_input = QLineEdit(self)
         self.b_input.setGeometry(50, 110, 50, 20)
-
+        self.b_input.setValidator(QDoubleValidator())
+        
         self.c_label = QLabel("c =", self)
         self.c_label.setGeometry(20, 140, 20, 20)
         self.c_input = QLineEdit(self)
         self.c_input.setGeometry(50, 140, 50, 20)
+        self.c_input.setValidator(QDoubleValidator())
 
         self.clear_button = QPushButton("Clear", self)
         self.clear_button.setGeometry(20, 180, 75, 30)
@@ -73,6 +76,10 @@ class StudyMateApp(QMainWindow):
         c = float(self.c_input.text())
 
         discriminant = b**2 - 4*a*c
+        if a == 0:
+            QMessageBox.warning(self, "Error", "a cannot be 0.")
+            self.a_input.clear()
+            return
         if discriminant >= 0:
             x1 = (-b + discriminant ** 0.5) / (2 * a)
             x2 = (-b - discriminant ** 0.5) / (2 * a)
